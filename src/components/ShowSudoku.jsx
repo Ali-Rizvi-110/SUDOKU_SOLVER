@@ -29,9 +29,9 @@ export default function ShowSudoku({arr, userBlock}){
             </tbody> */}
             <tbody>
                 {[...Array(9)].map((_, row) => (
-                <tr>
+                <tr key={row}>
                     {[...Array(9)].map((_, col) => (
-                    <td style={{backgroundColor:userBlock.includes(`${row}${col}`)? "rgba(0,255,0,0.5)": ""}}>{arr[row][col]}</td>
+                    <td key={col} style={{backgroundColor:userBlock.includes(`${row}${col}`)? "rgba(0,255,0,0.5)": ""}}>{arr[row][col]}</td>
                     ))}
                 </tr>
                 ))}
