@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './CSS/sudoku.css'
 import ShowSudoku from './ShowSudoku.jsx'
 
@@ -7,14 +7,18 @@ export default function Sudoku(){
     var arr = [ ["", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", ""]  ]
     const [table, nextTable] = React.useState(arr)
     const [show, nextShow] = React.useState(false)
+    const [userBlock, setUserBlock] = useState([])
     function fillCell(event){
-        arr = table
+        const value = event.target.value
+       arr = table
         const row = Math.floor(parseInt(event.target.id)/9)
         const col = parseInt(event.target.id)%9 
-        arr[row][col] = event.target.value
+        setUserBlock((prev)=>([...prev, `${row}${col}` ])) 
+        arr[row][col] = value
         nextTable({
             ...arr
         })  
+       
         // console.log(arr)
     }
     function check(arr){
@@ -116,7 +120,7 @@ export default function Sudoku(){
                 <td><input onChange = {fillCell} id = "16"  type="text" maxLength="1" size="1"/></td>
                 <td><input onChange = {fillCell} id = "17"  type="text" maxLength="1" size="1"/></td>
                 </tr>  
-                <tr>  
+                <tr style={{borderColor:"red"}}>  
                 <td><input onChange = {fillCell} id = "18"  type="text" maxLength="1" size="1"/></td>
                 <td><input onChange = {fillCell} id = "19"  type="text" maxLength="1" size="1"/></td>
                 <td><input onChange = {fillCell} id = "20"  type="text" maxLength="1" size="1"/></td>
@@ -198,12 +202,12 @@ export default function Sudoku(){
             <div className="note">
             <p>(note: press clear button before filling the table again)</p>
             </div>
-            <div className = "submitButton">
+            <div style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"10px"}} className = "submitButton">
                 <button onClick = {solve_sudoku} className = "vertical--center">Solve Sudoku</button>
                 <br /> <br />
                 <button onClick = {clear_reload} className ="vertical--center">Clear</button>
             </div>
-            {show && <ShowSudoku arr = {table} />}
+            {show && <ShowSudoku arr = {table} userBlock={userBlock} />}
         </div>
     )
 }
